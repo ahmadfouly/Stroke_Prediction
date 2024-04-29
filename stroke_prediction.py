@@ -9,7 +9,7 @@ model = load_model('stroke_prediction_model.h5')
 preprocessor = joblib.load('preprocessor.pkl')
 
 st.title('Stroke Prediction App')
-st.write("This app uses a machine learning model to predict the probability of a stroke based on the input data provided.")
+st.write("This app uses a machine learning model to predict the probability of a stroke.")
 
 # Define input fields (ensure these match exactly with those used during training)
 input_data = {
