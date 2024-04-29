@@ -3,8 +3,8 @@ import numpy as np
 from joblib import load
 
 # Load your trained model and scaler from file
-model = load("stroke_model.pkl")
-scaler = load("stroke_scaler.pkl")
+model = load("best_model.pkl")
+scaler = load("scaler.pkl")
 
 st.title('Stroke Prediction App')
 st.write("This app uses a machine learning model to predict the probability of a stroke based on the input data provided.")
