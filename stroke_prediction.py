@@ -3,10 +3,10 @@ import numpy as np
 from joblib import load
 
 # Load your trained model and scaler from file
-model = load("best_model.pkl")
-scaler = load("scaler.pkl")
+model = load("decision_tree_model.pkl")
+scaler = load("scaler_dt.pkl")
 
-st.title('Stroke Prediction App')
+st.title('Stroke Prediction App')  
 st.write("This app uses a machine learning model to predict the probability of a stroke based on the input data provided.")
 
 # Input fields for the user to fill out
@@ -72,19 +72,16 @@ input_features[feature_indices['bmi']] = bmi
 # Transform the input data using the scaler
 input_features = scaler.transform([input_features])
 
+
 # Prediction button
 if st.button('Predict Stroke'):
-    probabilities = model.predict_proba(input_features)[0]
-    probability_of_stroke = probabilities[1]  
-    
-    st.write(f"Probability of not having a stroke: {probabilities[0]:.2f}")
-    st.write(f"Probability of having a stroke: {probability_of_stroke:.2f}")
-    
-    # You can adjust the decision threshold here, if needed
-    threshold = 0.5  # Default threshold is 0.5, but this can be adjusted based on your needs
-    prediction = (probability_of_stroke >= threshold)
-
-    if prediction:
+    # Since it's a decision tree, you may choose to use just `.predict()` or `.predict_proba()`
+    prediction = model.predict(input_features)
+    if prediction[0] == 1:
         st.error('Warning: High risk of stroke.')
+        probability_of_stroke = model.predict_proba(input_features)[0, 1]
+        st.write(f"Probability of having a stroke: {probability_of_stroke:.2f}")
     else:
         st.success('Low risk of stroke.')
+        probability_of_not_having_stroke = model.predict_proba(input_features)[0, 0]
+        st.write(f"Probability of not having a stroke: {probability_of_not_having_stroke:.2f}")
