@@ -1,16 +1,18 @@
 import streamlit as st
 import pandas as pd
-from joblib import load
-import pandas as pd
+import numpy as np
+from tensorflow.keras.models import load_model
+import joblib
 
-# Load your trained model from file
-model = load("stroke_prediction_model.joblib")
+# Load your trained model and the fitted preprocessor from file
+model = load_model('stroke_prediction_model.h5')
+preprocessor = joblib.load('preprocessor.pkl')
 
 st.title('Stroke Prediction App')
 st.write("This app uses a machine learning model to predict the probability of a stroke based on the input data provided.")
 
-# Define input fields
-fields = {
+# Define input fields (ensure these match exactly with those used during training)
+input_data = {
     'gender': st.selectbox('Gender', ['Male', 'Female', 'Other']),
     'age': st.number_input('Age', min_value=0, max_value=100, value=50),
     'hypertension': st.selectbox('Hypertension', [0, 1]),
@@ -23,18 +25,19 @@ fields = {
     'smoking_status': st.selectbox('Smoking Status', ['formerly smoked', 'never smoked', 'smokes', 'unknown'])
 }
 
-# Create DataFrame for prediction
-input_df = pd.DataFrame([fields])
+# Button to make predictions
+if st.button('Predict Stroke Risk'):
+    # Create DataFrame from input fields
+    input_df = pd.DataFrame([input_data])
 
-# Prediction button
-if st.button('Predict Stroke'):
-    predictions = model.predict(input_df)
-    probabilities = model.predict_proba(input_df)[0]
-    
-    st.write(f"Raw Output (Probabilities): {probabilities}")
-    st.write(f"Predicted Class: {'Stroke' if predictions[0] == 1 else 'No Stroke'}")
-    
-    if predictions[0] == 1:
+    # Apply preprocessing
+    transformed_input = preprocessor.transform(input_df)
+
+    # Make prediction
+    prediction = model.predict(transformed_input)
+    probability = prediction[0][0]
+
+    if probability > 0.2:  # Adjusted threshold for predicting high risk
         st.error('Warning: High risk of stroke.')
     else:
         st.success('Low risk of stroke.')
