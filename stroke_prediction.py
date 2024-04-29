@@ -30,9 +30,10 @@ input_df = pd.DataFrame([fields])
 if st.button('Predict Stroke'):
     predictions = model.predict(input_df)
     probabilities = model.predict_proba(input_df)[0]
-    st.write(f"Prediction: {'Stroke' if predictions[0] == 1 else 'No Stroke'}")
-    st.write(f"Probability of not having a stroke: {probabilities[0]:.2f}")
-    st.write(f"Probability of having a stroke: {probabilities[1]:.2f}")
+    
+    st.write(f"Raw Output (Probabilities): {probabilities}")
+    st.write(f"Predicted Class: {'Stroke' if predictions[0] == 1 else 'No Stroke'}")
+    
     if predictions[0] == 1:
         st.error('Warning: High risk of stroke.')
     else:
