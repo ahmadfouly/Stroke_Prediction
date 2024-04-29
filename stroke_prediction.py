@@ -17,7 +17,7 @@ fields = {
     'heart_disease': st.selectbox('Heart Disease', [0, 1]),
     'ever_married': st.selectbox('Ever Married', ['No', 'Yes']),
     'work_type': st.selectbox('Work Type', ['Govt_job', 'Never_worked', 'Private', 'Self-employed', 'Children']),
-    'residence_type': st.selectbox('Residence Type', ['Rural', 'Urban']),
+    'Residence_type': st.selectbox('Residence Type', ['Rural', 'Urban']),
     'avg_glucose_level': st.number_input('Average Glucose Level', min_value=0.0, max_value=300.0, value=100.0),
     'bmi': st.number_input('BMI', min_value=10.0, max_value=50.0, value=22.0),
     'smoking_status': st.selectbox('Smoking Status', ['formerly smoked', 'never smoked', 'smokes', 'unknown'])
