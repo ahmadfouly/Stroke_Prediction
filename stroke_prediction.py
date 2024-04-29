@@ -75,13 +75,14 @@ input_features = scaler.transform([input_features])
 
 # Prediction button
 if st.button('Predict Stroke'):
-    # Since it's a decision tree, you may choose to use just `.predict()` or `.predict_proba()`
-    prediction = model.predict(input_features)
-    if prediction[0] == 1:
+    predictions = model.predict(input_features)
+    probabilities = model.predict_proba(input_features)[0]
+
+    st.write(f"Predictions: {predictions}")
+    st.write(f"Probability of not having a stroke: {probabilities[0]:.2f}")
+    st.write(f"Probability of having a stroke: {probabilities[1]:.2f}")
+    
+    if predictions[0] == 1:
         st.error('Warning: High risk of stroke.')
-        probability_of_stroke = model.predict_proba(input_features)[0, 1]
-        st.write(f"Probability of having a stroke: {probability_of_stroke:.2f}")
     else:
         st.success('Low risk of stroke.')
-        probability_of_not_having_stroke = model.predict_proba(input_features)[0, 0]
-        st.write(f"Probability of not having a stroke: {probability_of_not_having_stroke:.2f}")
